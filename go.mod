@@ -6,6 +6,7 @@ require (
 	github.com/BurntSushi/toml v1.3.2
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/nicksnyder/go-i18n/v2 v2.2.1
+	go.deanishe.net/env v0.5.1
 	go.mongodb.org/mongo-driver v1.12.1
 	golang.org/x/text v0.12.0
 )
