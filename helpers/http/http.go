@@ -23,12 +23,12 @@ type Config struct {
 	BodyLimit     int
 }
 
-func RunServer(cfg Config) {
+func RunServer(cfg Config) error {
 	addr := fmt.Sprintf("%v:%v", cfg.Host, cfg.Port)
-	RunServerOnAddr(addr, cfg)
+	return RunServerOnAddr(addr, cfg)
 }
 
-func RunServerOnAddr(addr string, cfg Config) {
+func RunServerOnAddr(addr string, cfg Config) error {
 	if cfg.AppName == "" {
 		cfg.AppName = "Cillop Server"
 	}
@@ -50,6 +50,7 @@ func RunServerOnAddr(addr string, cfg Config) {
 	group := app.Group(fmt.Sprintf("/%v", cfg.Group))
 	setGlobalMiddlewares(app, cfg)
 	cfg.CreateHandler(group)
+	return app.Listen(addr)
 }
 
 func setGlobalMiddlewares(router fiber.Router, cfg Config) {
