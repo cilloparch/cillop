@@ -6,6 +6,7 @@ require (
 	github.com/BurntSushi/toml v1.3.2
 	github.com/go-playground/validator/v10 v10.15.1
 	github.com/go-redis/redis/v8 v8.11.5
+	github.com/goccy/go-json v0.10.2
 	github.com/gofiber/fiber/v2 v2.48.0
 	github.com/google/uuid v1.3.1
 	github.com/nats-io/nats.go v1.28.0
