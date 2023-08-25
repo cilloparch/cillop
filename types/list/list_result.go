@@ -3,12 +3,12 @@ package list
 import "time"
 
 type Result[Type any] struct {
-	List          []Type
-	Total         int64
-	FilteredTotal int64
-	Page          int64
-	IsNext        bool
-	IsPrev        bool
+	List          []Type `json:"list"`
+	Total         int64  `json:"total"`
+	FilteredTotal int64  `json:"filteredTotal"`
+	Page          int64  `json:"page"`
+	IsNext        bool   `json:"isNext"`
+	IsPrev        bool   `json:"isPrev"`
 }
 
 type DateResult[Type any] struct {
