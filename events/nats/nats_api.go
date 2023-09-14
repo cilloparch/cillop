@@ -74,6 +74,18 @@ func (e *natsEngine) Subscribe(event string, handler events.Handler) error {
 	return nil
 }
 
+func (e *natsEngine) SubscribeQueue(event string, queue string, handler events.Handler) error {
+	sub, err := e.C.QueueSubscribe(event, queue, func(msg *nats.Msg) {
+		handler(msg.Data)
+		msg.Ack()
+	})
+	if err != nil {
+		return err
+	}
+	e.subs = append(e.subs, sub)
+	return nil
+}
+
 func (e *natsEngine) Unsubscribe(event string, handler events.Handler) error {
 	for i, sub := range e.subs {
 		if sub.Subject == event {

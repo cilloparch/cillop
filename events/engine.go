@@ -7,6 +7,7 @@ type Engine interface {
 	Publish(event string, data interface{}) error
 	CheckSubAndPublish(fullEvent string, data interface{}) error
 	Subscribe(event string, handler Handler) error
+	SubscribeQueue(event string, queue string, handler Handler) error
 	Unsubscribe(event string, handler Handler) error
 	Marshal(data interface{}) ([]byte, error)
 	Unmarshal(data []byte, v interface{}) error
