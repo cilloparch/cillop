@@ -4,6 +4,8 @@ package mredis
 import (
 	"context"
 	"time"
+
+	"github.com/go-redis/redis/v8"
 )
 
 // Service is the interface that defines the Redis service methods.
@@ -31,6 +33,9 @@ type Service interface {
 
 	// Exist checks if a key exists in Redis.
 	Exist(ctx context.Context, k string) (bool, error)
+
+	// GetClient returns the Redis client.
+	GetClient() *redis.Client
 }
 
 // Config holds the configuration settings for the Redis client.
