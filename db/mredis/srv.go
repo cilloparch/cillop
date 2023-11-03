@@ -61,3 +61,7 @@ func (r *client) Exist(ctx context.Context, k string) (bool, error) {
 	}
 	return res == 1, nil
 }
+
+func (r *client) GetClient() *redis.Client {
+	return r.c
+}
