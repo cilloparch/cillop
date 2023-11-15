@@ -21,6 +21,7 @@ type Config struct {
 	I18n          *i18np.I18n
 	AcceptLangs   []string
 	BodyLimit     int
+	ReadBufferSize int
 }
 
 func RunServer(cfg Config) error {
@@ -35,6 +36,9 @@ func RunServerOnAddr(addr string, cfg Config) error {
 	if cfg.BodyLimit == 0 {
 		cfg.BodyLimit = 5 * 1024 * 1024
 	}
+	if cfg.ReadBufferSize == 0 {
+		cfg.ReadBufferSize = 8 * 1024 * 1024
+	}
 	app := fiber.New(fiber.Config{
 		ErrorHandler: NewErrorHandler(ErrorHandlerConfig{
 			DfMsgKey: "error_internal_server_error",
@@ -46,6 +50,7 @@ func RunServerOnAddr(addr string, cfg Config) error {
 		AppName:       cfg.AppName,
 		ServerHeader:  cfg.AppName,
 		BodyLimit:     cfg.BodyLimit,
+		ReadBufferSize: cfg.ReadBufferSize,
 	})
 	group := app.Group(fmt.Sprintf("/%v", cfg.Group))
 	setGlobalMiddlewares(app, cfg)
