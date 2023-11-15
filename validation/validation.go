@@ -33,7 +33,7 @@ func (v *Validator) ValidateStruct(s interface{}, languages ...string) []*ErrorR
 	if err != nil {
 		for _, err := range err.(validator.ValidationErrors) {
 			var element ErrorResponse
-			ns := v.mapStructNamespace(err.StructNamespace())
+			ns := v.mapStructNamespace(err.Namespace())
 			if ns != "" {
 				element.Namespace = ns
 			}
@@ -48,7 +48,7 @@ func (v *Validator) ValidateStruct(s interface{}, languages ...string) []*ErrorR
 
 func (v *Validator) mapStructNamespace(ns string) string {
 	str := strings.Split(ns, ".")
-	return strings.ToLower(strings.Join(str[1:], "."))
+	return strings.Join(str[1:], ".")
 }
 
 func (v *Validator) ConnectCustom() {
