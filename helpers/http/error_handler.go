@@ -2,14 +2,12 @@ package http
 
 import (
 	"github.com/cilloparch/cillop/i18np"
-	"github.com/cilloparch/cillop/middlewares/i18n"
 	"github.com/cilloparch/cillop/result"
 	"github.com/gofiber/fiber/v2"
 )
 
 type ErrorHandlerConfig struct {
-	DfMsgKey string
-	I18n     *i18np.I18n
+	I18n *i18np.I18n
 }
 
 func NewErrorHandler(cfg ErrorHandlerConfig) func(c *fiber.Ctx, err error) error {
@@ -24,11 +22,6 @@ func NewErrorHandler(cfg ErrorHandlerConfig) func(c *fiber.Ctx, err error) error
 		if e, ok := err.(*fiber.Error); ok {
 			code = e.Code
 		}
-		if cfg.DfMsgKey != "" {
-			l, a := i18n.GetLanguagesInContext(*cfg.I18n, c)
-			return c.Status(code).JSON(result.Error(cfg.I18n.Translate(cfg.DfMsgKey, l, a), code))
-		}
-		err = c.Status(code).JSON(result.Error(err.Error(), code))
-		return err
+		return c.Status(code).JSON(map[string]interface{}{})
 	}
 }

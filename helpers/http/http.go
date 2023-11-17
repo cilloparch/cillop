@@ -13,14 +13,14 @@ import (
 )
 
 type Config struct {
-	Host          string
-	Port          int
-	Group         string
-	AppName       string
-	CreateHandler func(router fiber.Router) fiber.Router
-	I18n          *i18np.I18n
-	AcceptLangs   []string
-	BodyLimit     int
+	Host           string
+	Port           int
+	Group          string
+	AppName        string
+	CreateHandler  func(router fiber.Router) fiber.Router
+	I18n           *i18np.I18n
+	AcceptLangs    []string
+	BodyLimit      int
 	ReadBufferSize int
 }
 
@@ -31,7 +31,7 @@ func RunServer(cfg Config) error {
 
 func RunServerOnAddr(addr string, cfg Config) error {
 	if cfg.AppName == "" {
-		cfg.AppName = "Cillop Server"
+		cfg.AppName = "Cillop Arch"
 	}
 	if cfg.BodyLimit == 0 {
 		cfg.BodyLimit = 5 * 1024 * 1024
@@ -41,15 +41,14 @@ func RunServerOnAddr(addr string, cfg Config) error {
 	}
 	app := fiber.New(fiber.Config{
 		ErrorHandler: NewErrorHandler(ErrorHandlerConfig{
-			DfMsgKey: "error_internal_server_error",
-			I18n:     cfg.I18n,
+			I18n: cfg.I18n,
 		}),
-		JSONEncoder:   json.Marshal,
-		JSONDecoder:   json.Unmarshal,
-		CaseSensitive: true,
-		AppName:       cfg.AppName,
-		ServerHeader:  cfg.AppName,
-		BodyLimit:     cfg.BodyLimit,
+		JSONEncoder:    json.Marshal,
+		JSONDecoder:    json.Unmarshal,
+		CaseSensitive:  true,
+		AppName:        cfg.AppName,
+		ServerHeader:   cfg.AppName,
+		BodyLimit:      cfg.BodyLimit,
 		ReadBufferSize: cfg.ReadBufferSize,
 	})
 	group := app.Group(fmt.Sprintf("/%v", cfg.Group))
