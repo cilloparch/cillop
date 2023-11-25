@@ -1,16 +1,13 @@
 package http
 
 import (
-	"github.com/cilloparch/cillop/i18np"
 	"github.com/cilloparch/cillop/result"
 	"github.com/gofiber/fiber/v2"
 )
 
-type ErrorHandlerConfig struct {
-	I18n *i18np.I18n
-}
+type ErrorHandler func(c *fiber.Ctx, err error) error
 
-func NewErrorHandler(cfg ErrorHandlerConfig) func(c *fiber.Ctx, err error) error {
+func NewErrorHandler() ErrorHandler {
 	return func(c *fiber.Ctx, err error) error {
 		code := fiber.StatusInternalServerError
 		if e, ok := err.(*result.Result); ok {

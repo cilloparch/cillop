@@ -40,9 +40,7 @@ func RunServerOnAddr(addr string, cfg Config) error {
 		cfg.ReadBufferSize = 8 * 1024 * 1024
 	}
 	app := fiber.New(fiber.Config{
-		ErrorHandler: NewErrorHandler(ErrorHandlerConfig{
-			I18n: cfg.I18n,
-		}),
+		ErrorHandler:   NewErrorHandler(),
 		JSONEncoder:    json.Marshal,
 		JSONDecoder:    json.Unmarshal,
 		CaseSensitive:  true,
