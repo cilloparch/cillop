@@ -22,6 +22,7 @@ type Config struct {
 	AcceptLangs    []string
 	BodyLimit      int
 	ReadBufferSize int
+	Debug          bool
 }
 
 func RunServer(cfg Config) error {
@@ -40,7 +41,7 @@ func RunServerOnAddr(addr string, cfg Config) error {
 		cfg.ReadBufferSize = 8 * 1024 * 1024
 	}
 	app := fiber.New(fiber.Config{
-		ErrorHandler:   NewErrorHandler(),
+		ErrorHandler:   NewErrorHandler(cfg.Debug),
 		JSONEncoder:    json.Marshal,
 		JSONDecoder:    json.Unmarshal,
 		CaseSensitive:  true,
