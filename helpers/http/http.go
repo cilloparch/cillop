@@ -50,6 +50,7 @@ func RunServerOnAddr(addr string, cfg Config) error {
 		BodyLimit:      cfg.BodyLimit,
 		ReadBufferSize: cfg.ReadBufferSize,
 	})
+	app.Use(i18n.New(*cfg.I18n, cfg.AcceptLangs))
 	group := app.Group(fmt.Sprintf("/%v", cfg.Group))
 	setGlobalMiddlewares(app, cfg)
 	cfg.CreateHandler(group)

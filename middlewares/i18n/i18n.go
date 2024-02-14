@@ -15,20 +15,17 @@ func GetLanguagesInContext(i i18np.I18n, c *fiber.Ctx) (string, string) {
 	if l == "" {
 		l = a
 	}
-	list := strings.Split(l, ",")
+	list := strings.Split(l, ";")
 	alternative := ""
-
-	for _, la := range list {
-		for _, v := range AcceptedLanguages {
-			if strings.Contains(la, v) {
-				return v, a
-			}
-			if strings.Contains(la, v[:2]) {
-				alternative = v
-			}
+	locales := findLocales(list)
+	for _, v := range AcceptedLanguages {
+		if locales[v] {
+			return v, a
 		}
 	}
-
+	if len(list) > 1 {
+		alternative = list[1]
+	}
 	if alternative != "" {
 		return alternative, a
 	}
@@ -43,4 +40,32 @@ func New(i i18np.I18n, acceptLangs []string) fiber.Handler {
 		c.Locals("accept-language", a)
 		return c.Next()
 	}
+}
+
+func ParseLocale(ctx *fiber.Ctx) string {
+	return ctx.Locals("lang").(string)
+}
+
+func ParseLocales(ctx *fiber.Ctx) (string, string) {
+	return ctx.Locals("lang").(string), ctx.Locals("accept-language").(string)
+}
+
+func findLocales(list []string) map[string]bool {
+	locales := make(map[string]bool)
+	for _, li := range list {
+		lineItems := strings.Split(li, ",")
+		for _, word := range lineItems {
+			if word == "en" || word == "tr" {
+				locales[word] = true
+			}
+			if len(word) == 2 && word[1] == '-' {
+				locales[strings.ToLower(word)] = true
+			}
+			if len(word) == 5 && word[2] == '-' {
+				double := strings.Split(word, "-")
+				locales[double[0]] = true
+			}
+		}
+	}
+	return locales
 }
