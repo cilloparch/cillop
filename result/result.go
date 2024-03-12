@@ -10,8 +10,9 @@ type Result struct {
 }
 
 type DetailResult struct {
-	Result
-	Detail any `json:"detail"`
+	Status  int    `json:"-"`
+	Message string `json:"message"`
+	Detail  any    `json:"detail"`
 }
 
 func (r *Result) Error() string {
@@ -50,8 +51,8 @@ func SuccessDetail(m string, d any, c ...int) *DetailResult {
 		code = c[0]
 	}
 	return &DetailResult{
-		Detail: d,
-		Result: Result{Message: m, Status: code},
+		Detail:  d,
+		Message: m, Status: code,
 	}
 }
 
@@ -61,7 +62,7 @@ func ErrorDetail(m string, d any, c ...int) *DetailResult {
 		code = c[0]
 	}
 	return &DetailResult{
-		Detail: d,
-		Result: Result{Message: m, Status: code},
+		Detail:  d,
+		Message: m, Status: code,
 	}
 }
