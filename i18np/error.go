@@ -53,7 +53,7 @@ func (e *Error) IsErr() bool {
 // NewError returns a new I18nError
 // It is used to return errors from functions
 // example:
-// i18n.NewError("error.key", i18np.P{"param1": "value1"})
+// i18n.NewError("error.key", i18n.P{"param1": "value1"})
 func NewError(key string, params ...P) *Error {
 	p := &P{}
 	if len(params) > 0 {
@@ -67,7 +67,7 @@ func NewError(key string, params ...P) *Error {
 //	It is used to return errors from functions
 //
 // example:
-// i18n.NewErrorDetails("error.key", "details", i18np.P{"param1": "value1"})
+// i18n.NewErrorDetails("error.key", "details", i18n.P{"param1": "value1"})
 func NewErrorDetails(key string, details interface{}, params ...P) *Error {
 	p := &P{}
 	if len(params) > 0 {

@@ -62,6 +62,10 @@ func (v *Validator) ConnectCustom() {
 	_ = v.validate.RegisterValidation("uuid", validateUUID)
 }
 
+func (v *Validator) Register(key string, fn validator.Func, callValidationEvenIfNull ...bool) {
+	_ = v.validate.RegisterValidation(key, fn, callValidationEvenIfNull...)
+}
+
 func (v *Validator) RegisterTagName() {
 	v.validate.RegisterTagNameFunc(func(f reflect.StructField) string {
 		name := strings.SplitN(f.Tag.Get("json"), ",", 2)[0]

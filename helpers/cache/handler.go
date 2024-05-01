@@ -37,7 +37,7 @@ func (c *client[Entity]) Timeout(timeout time.Duration) Client[Entity] {
 	return c
 }
 
-func (c *client[Entity]) Get(ctx context.Context, key string) (Entity, *i18np.Error) {
+func (c *client[Entity]) Get(ctx context.Context, key string) (Entity, error) {
 	if !c.validate() {
 		var e Entity
 		return e, i18np.NewError(errorMessages.NotRunnable)
@@ -57,7 +57,7 @@ func (c *client[Entity]) validate() bool {
 	return c.handler != nil && c.creator != nil
 }
 
-func (c *client[Entity]) get(ctx context.Context, key string, e Entity) (Entity, *i18np.Error) {
+func (c *client[Entity]) get(ctx context.Context, key string, e Entity) (Entity, error) {
 	bytes, _err := c.service.Get(ctx, key)
 	if _err != nil {
 		return e, i18np.NewError(errorMessages.AnErrorOnGet)
@@ -65,7 +65,7 @@ func (c *client[Entity]) get(ctx context.Context, key string, e Entity) (Entity,
 	return c.unmarshal(bytes)
 }
 
-func (c *client[Entity]) handleAndSet(ctx context.Context, key string, e Entity) (Entity, *i18np.Error) {
+func (c *client[Entity]) handleAndSet(ctx context.Context, key string, e Entity) (Entity, error) {
 	entity, _error := c.handler()
 	if _error != nil {
 		return e, _error
@@ -77,7 +77,7 @@ func (c *client[Entity]) handleAndSet(ctx context.Context, key string, e Entity)
 	return entity, nil
 }
 
-func (c *client[Entity]) unmarshal(bytes string) (Entity, *i18np.Error) {
+func (c *client[Entity]) unmarshal(bytes string) (Entity, error) {
 	var entity Entity
 	err := json.Unmarshal([]byte(bytes), &entity)
 	if err != nil {

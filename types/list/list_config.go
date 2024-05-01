@@ -3,8 +3,8 @@ package list
 import "time"
 
 type Config struct {
-	Offset int64
-	Limit  int64
+	Offset int
+	Limit  int
 }
 
 type DateConfig struct {
@@ -13,12 +13,12 @@ type DateConfig struct {
 	EndDate   time.Time
 }
 
-func (c *Config) SetOffset(offset int64) *Config {
+func (c *Config) SetOffset(offset int) *Config {
 	c.Offset = offset
 	return c
 }
 
-func (c *Config) SetLimit(limit int64) *Config {
+func (c *Config) SetLimit(limit int) *Config {
 	c.Limit = limit
 	return c
 }

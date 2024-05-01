@@ -11,7 +11,7 @@ var AcceptedLanguages = []string{}
 
 func GetLanguagesInContext(i i18np.I18n, c *fiber.Ctx) (string, string) {
 	l := c.Query("lang")
-	a := c.Get("Accept-Language", i.Fallback)
+	a := c.Get("Accept-Language", i.Fallback())
 	if l == "" {
 		l = a
 	}

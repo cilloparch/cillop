@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/cilloparch/cillop/i18np"
+	"github.com/cilloparch/cillop/log"
 	"github.com/cilloparch/cillop/middlewares/i18n"
 	"github.com/goccy/go-json"
 
@@ -23,9 +24,13 @@ type Config struct {
 	BodyLimit      int
 	ReadBufferSize int
 	Debug          bool
+	Logger         log.Service
 }
 
 func RunServer(cfg Config) error {
+	if cfg.Logger == nil || cfg.Logger == log.Service(nil) {
+		cfg.Logger = log.Default(log.Config{Debug: cfg.Debug})
+	}
 	addr := fmt.Sprintf("%v:%v", cfg.Host, cfg.Port)
 	return RunServerOnAddr(addr, cfg)
 }
@@ -41,7 +46,7 @@ func RunServerOnAddr(addr string, cfg Config) error {
 		cfg.ReadBufferSize = 8 * 1024 * 1024
 	}
 	app := fiber.New(fiber.Config{
-		ErrorHandler:   NewErrorHandler(cfg.Debug),
+		ErrorHandler:   NewErrorHandler(cfg.Logger),
 		JSONEncoder:    json.Marshal,
 		JSONDecoder:    json.Unmarshal,
 		CaseSensitive:  true,
