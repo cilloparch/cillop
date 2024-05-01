@@ -3,7 +3,7 @@ package mongodb
 import (
 	"context"
 
-	"github.com/cilloparch/cillop/i18np"
+	"github.com/cilloparch/cillop/v2/i18np"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"

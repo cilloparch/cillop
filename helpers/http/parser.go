@@ -3,10 +3,10 @@ package http
 import (
 	"context"
 
-	"github.com/cilloparch/cillop/i18np"
-	"github.com/cilloparch/cillop/middlewares/i18n"
-	"github.com/cilloparch/cillop/result"
-	"github.com/cilloparch/cillop/validation"
+	"github.com/cilloparch/cillop/v2/i18np"
+	"github.com/cilloparch/cillop/v2/middlewares/i18n"
+	"github.com/cilloparch/cillop/v2/result"
+	"github.com/cilloparch/cillop/v2/validation"
 	"github.com/gofiber/fiber/v2"
 )
 

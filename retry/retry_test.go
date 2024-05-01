@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/cilloparch/cillop/retry"
+	"github.com/cilloparch/cillop/v2/retry"
 )
 
 type retryFuncTestCase struct {

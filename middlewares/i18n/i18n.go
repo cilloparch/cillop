@@ -3,7 +3,7 @@ package i18n
 import (
 	"strings"
 
-	"github.com/cilloparch/cillop/i18np"
+	"github.com/cilloparch/cillop/v2/i18np"
 	"github.com/gofiber/fiber/v2"
 )
 

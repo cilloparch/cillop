@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/cilloparch/cillop/i18np"
+	"github.com/cilloparch/cillop/v2/i18np"
 )
 
 type client[Entity any] struct {

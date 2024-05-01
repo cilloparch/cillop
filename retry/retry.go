@@ -3,7 +3,7 @@ package retry
 import (
 	"time"
 
-	"github.com/cilloparch/cillop/log"
+	"github.com/cilloparch/cillop/v2/log"
 )
 
 // RetryFunc is a function that will be retried

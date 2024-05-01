@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/cilloparch/cillop/i18np"
+	"github.com/cilloparch/cillop/v2/i18np"
 	"github.com/go-playground/validator/v10"
 )
 

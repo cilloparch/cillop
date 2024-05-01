@@ -1,11 +1,11 @@
 package http
 
 import (
-	"github.com/cilloparch/cillop/i18np"
-	"github.com/cilloparch/cillop/log"
-	"github.com/cilloparch/cillop/middlewares/i18n"
-	"github.com/cilloparch/cillop/rescode"
-	"github.com/cilloparch/cillop/result"
+	"github.com/cilloparch/cillop/v2/i18np"
+	"github.com/cilloparch/cillop/v2/log"
+	"github.com/cilloparch/cillop/v2/middlewares/i18n"
+	"github.com/cilloparch/cillop/v2/rescode"
+	"github.com/cilloparch/cillop/v2/result"
 	"github.com/gofiber/fiber/v2"
 )
 

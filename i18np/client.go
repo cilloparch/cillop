@@ -2,7 +2,7 @@ package i18np
 
 import (
 	"github.com/BurntSushi/toml"
-	"github.com/cilloparch/cillop/log"
+	"github.com/cilloparch/cillop/v2/log"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"golang.org/x/text/language"
 )

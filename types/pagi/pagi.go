@@ -1,6 +1,6 @@
 package pagination
 
-import "github.com/cilloparch/cillop/types/list"
+import "github.com/cilloparch/cillop/v2/types/list"
 
 // P is the pagination struct
 type P struct {

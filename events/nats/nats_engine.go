@@ -1,7 +1,7 @@
 package nats
 
 import (
-	"github.com/cilloparch/cillop/events"
+	"github.com/cilloparch/cillop/v2/events"
 	"github.com/nats-io/nats.go"
 )
 
