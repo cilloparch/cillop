@@ -24,14 +24,14 @@ func Default(cfg Config) Service {
 
 func (l *defaultLogger) Msg(msg string) {
 	if l.debug {
-		fmt.Printf("acorn: %s\n", msg)
+		fmt.Printf("cillop: %s\n", msg)
 	}
 }
 
 func (l *defaultLogger) Error(err error, msg ...string) {
 	if l.debug {
 		if len(msg) > 0 {
-			fmt.Printf("acorn: %s: %s\n", msg[0], err.Error())
+			fmt.Printf("cillop: %s: %s\n", msg[0], err.Error())
 			return
 		}
 		l.Msg(err.Error())
