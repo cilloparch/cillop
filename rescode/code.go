@@ -26,12 +26,23 @@ type Extra struct {
 	Translateable bool
 }
 
+// DefaultConfig is a default configuration for the RC.
+// HttpStatus is 400 and Translateable is true.
+// if you want to change the default configuration, you can change the value here.
+// Example:
+//
+//	rescode.DefaultConfig = rescode.Extra{
+//		HttpStatus:    500,
+//		Translateable: false,
+//	}
+var DefaultConfig = Extra{
+	HttpStatus:    400,
+	Translateable: true,
+}
+
 // New is a function to create a new RC.
 func New(code uint64, message string, extra ...Extra) *RC {
-	e := Extra{
-		HttpStatus:    400,
-		Translateable: true,
-	}
+	e := DefaultConfig
 	if len(extra) > 0 {
 		e = extra[0]
 	}
