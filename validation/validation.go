@@ -1,6 +1,7 @@
 package validation
 
 import (
+	"context"
 	"reflect"
 	"strings"
 
@@ -27,9 +28,9 @@ func New(i *i18np.I18n) *Validator {
 	}
 }
 
-func (v *Validator) ValidateStruct(s interface{}, languages ...string) []*ErrorResponse {
+func (v *Validator) ValidateStruct(ctx context.Context, s interface{}, languages ...string) []*ErrorResponse {
 	var errors []*ErrorResponse
-	err := v.validate.Struct(s)
+	err := v.validate.StructCtx(ctx, s)
 	if err != nil {
 		for _, err := range err.(validator.ValidationErrors) {
 			var element ErrorResponse
@@ -42,6 +43,34 @@ func (v *Validator) ValidateStruct(s interface{}, languages ...string) []*ErrorR
 			element.Message = v.translateErrorMessage(err, languages...)
 			errors = append(errors, &element)
 		}
+	}
+	return errors
+}
+
+func (v *Validator) ValidateMap(ctx context.Context, m map[string]interface{}, rules map[string]interface{}, languages ...string) []*ErrorResponse {
+	var errors []*ErrorResponse
+	errMap := v.validate.ValidateMapCtx(ctx, m, rules)
+	for key, err := range errMap {
+		var element ErrorResponse
+		if _err, ok := err.(validator.ValidationErrors); ok {
+			for _, err := range _err {
+				ns := v.mapStructNamespace(err.Namespace())
+				if ns != "" {
+					element.Namespace = ns
+				}
+				element.Field = err.Field()
+				if element.Field == "" {
+					element.Field = key
+				}
+				element.Value = err.Value()
+				element.Message = v.translateErrorMessage(err, languages...)
+				errors = append(errors, &element)
+			}
+			continue
+		}
+		element.Field = key
+		element.Value = m[key]
+		errors = append(errors, &element)
 	}
 	return errors
 }
