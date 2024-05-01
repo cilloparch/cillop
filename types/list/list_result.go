@@ -9,13 +9,13 @@ type Result[Type any] struct {
 	List []Type `json:"list"`
 
 	// Total is the total number of items
-	Total int `json:"total"`
+	Total int64 `json:"total"`
 
 	// FilteredTotal is the total number of items after filtering
-	FilteredTotal int `json:"filteredTotal"`
+	FilteredTotal int64 `json:"filteredTotal"`
 
 	// Page is the current page
-	Page int `json:"page"`
+	Page int64 `json:"page"`
 
 	// IsNext is a boolean that indicates if there is a next page
 	IsNext bool `json:"isNext"`
