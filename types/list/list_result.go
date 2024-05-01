@@ -34,3 +34,22 @@ type DateResult[Type any] struct {
 	// EndDate is the end date of the list
 	EndDate time.Time
 }
+
+func NewListResult[Type any](items []Type, total int64, filteredTotal int64, listConfig Config) *Result[Type] {
+	return &Result[Type]{
+		List:          items,
+		Total:         total,
+		FilteredTotal: filteredTotal,
+		Page:          int64(listConfig.Offset/listConfig.Limit + 1),
+		IsNext:        total > int64(listConfig.Offset+listConfig.Limit),
+		IsPrev:        listConfig.Offset > 0,
+	}
+}
+
+func NewDateListResult[Type any](items []Type, total int64, filteredTotal int64, listConfig Config, startDate time.Time, endDate time.Time) *DateResult[Type] {
+	return &DateResult[Type]{
+		Result:    *NewListResult[Type](items, total, filteredTotal, listConfig),
+		StartDate: startDate,
+		EndDate:   endDate,
+	}
+}
