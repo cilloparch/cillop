@@ -15,13 +15,13 @@ type (
 )
 
 type Helper[Entity any, Transform any] interface {
-	GetFilterCount(ctx context.Context, filter bson.M, options ...*options.CountOptions) (int64, *i18np.Error)
-	GetListFilter(ctx context.Context, filter bson.M, options ...*options.FindOptions) ([]Entity, *i18np.Error)
-	GetListFilterTransform(ctx context.Context, filter bson.M, transform EntityTransformer[Entity, Transform], options ...*options.FindOptions) ([]Transform, *i18np.Error)
-	GetAggregateListFilter(ctx context.Context, pipeline mongo.Pipeline, options ...*options.AggregateOptions) ([]Entity, *i18np.Error)
-	GetAggregateListFilterTransform(ctx context.Context, pipeline mongo.Pipeline, transform EntityTransformer[Entity, Transform], options ...*options.AggregateOptions) ([]Transform, *i18np.Error)
-	GetFilter(ctx context.Context, filter bson.M, options ...*options.FindOneOptions) (*Entity, bool, *i18np.Error)
-	UpdateOne(ctx context.Context, filter bson.M, setter bson.M, options ...*options.UpdateOptions) *i18np.Error
+	GetFilterCount(ctx context.Context, filter bson.M, options ...*options.CountOptions) (int64, error)
+	GetListFilter(ctx context.Context, filter bson.M, options ...*options.FindOptions) ([]Entity, error)
+	GetListFilterTransform(ctx context.Context, filter bson.M, transform EntityTransformer[Entity, Transform], options ...*options.FindOptions) ([]Transform, error)
+	GetAggregateListFilter(ctx context.Context, pipeline mongo.Pipeline, options ...*options.AggregateOptions) ([]Entity, error)
+	GetAggregateListFilterTransform(ctx context.Context, pipeline mongo.Pipeline, transform EntityTransformer[Entity, Transform], options ...*options.AggregateOptions) ([]Transform, error)
+	GetFilter(ctx context.Context, filter bson.M, options ...*options.FindOneOptions) (*Entity, bool, error)
+	UpdateOne(ctx context.Context, filter bson.M, setter bson.M, options ...*options.UpdateOptions) error
 }
 
 type helper[Entity any, Transform any] struct {
@@ -36,7 +36,7 @@ func NewHelper[Entity any, Transform any](collection *mongo.Collection, creator 
 	}
 }
 
-func (h *helper[Entity, Transform]) GetFilterCount(ctx context.Context, filter bson.M, options ...*options.CountOptions) (int64, *i18np.Error) {
+func (h *helper[Entity, Transform]) GetFilterCount(ctx context.Context, filter bson.M, options ...*options.CountOptions) (int64, error) {
 	count, err := h.collection.CountDocuments(ctx, filter, options...)
 	if err != nil {
 		return 0, i18np.NewError("get_query_failed", i18np.P{"Error": err.Error()})
@@ -44,7 +44,7 @@ func (h *helper[Entity, Transform]) GetFilterCount(ctx context.Context, filter b
 	return count, nil
 }
 
-func (h *helper[Entity, Transform]) GetListFilter(ctx context.Context, filter bson.M, options ...*options.FindOptions) ([]Entity, *i18np.Error) {
+func (h *helper[Entity, Transform]) GetListFilter(ctx context.Context, filter bson.M, options ...*options.FindOptions) ([]Entity, error) {
 	var l []Entity
 	cur, err := h.collection.Find(ctx, filter, options...)
 	if err != nil {
@@ -61,7 +61,7 @@ func (h *helper[Entity, Transform]) GetListFilter(ctx context.Context, filter bs
 	return l, nil
 }
 
-func (h *helper[Entity, Transform]) GetListFilterTransform(ctx context.Context, filter bson.M, transform EntityTransformer[Entity, Transform], options ...*options.FindOptions) ([]Transform, *i18np.Error) {
+func (h *helper[Entity, Transform]) GetListFilterTransform(ctx context.Context, filter bson.M, transform EntityTransformer[Entity, Transform], options ...*options.FindOptions) ([]Transform, error) {
 	var l []Transform
 	cur, err := h.collection.Find(ctx, filter, options...)
 	if err != nil {
@@ -78,7 +78,7 @@ func (h *helper[Entity, Transform]) GetListFilterTransform(ctx context.Context, 
 	return l, nil
 }
 
-func (h *helper[Entity, Transform]) GetAggregateListFilter(ctx context.Context, pipeline mongo.Pipeline, options ...*options.AggregateOptions) ([]Entity, *i18np.Error) {
+func (h *helper[Entity, Transform]) GetAggregateListFilter(ctx context.Context, pipeline mongo.Pipeline, options ...*options.AggregateOptions) ([]Entity, error) {
 	var l []Entity
 	cur, err := h.collection.Aggregate(ctx, pipeline, options...)
 	if err != nil {
@@ -95,7 +95,7 @@ func (h *helper[Entity, Transform]) GetAggregateListFilter(ctx context.Context, 
 	return l, nil
 }
 
-func (h *helper[Entity, Transform]) GetAggregateListFilterTransform(ctx context.Context, pipeline mongo.Pipeline, transform EntityTransformer[Entity, Transform], options ...*options.AggregateOptions) ([]Transform, *i18np.Error) {
+func (h *helper[Entity, Transform]) GetAggregateListFilterTransform(ctx context.Context, pipeline mongo.Pipeline, transform EntityTransformer[Entity, Transform], options ...*options.AggregateOptions) ([]Transform, error) {
 	var l []Transform
 	cur, err := h.collection.Aggregate(ctx, pipeline, options...)
 	if err != nil {
@@ -112,7 +112,7 @@ func (h *helper[Entity, Transform]) GetAggregateListFilterTransform(ctx context.
 	return l, nil
 }
 
-func (h *helper[Entity, Transform]) GetFilter(ctx context.Context, filter bson.M, options ...*options.FindOneOptions) (*Entity, bool, *i18np.Error) {
+func (h *helper[Entity, Transform]) GetFilter(ctx context.Context, filter bson.M, options ...*options.FindOneOptions) (*Entity, bool, error) {
 	o := h.creator()
 	res := h.collection.FindOne(ctx, filter, options...)
 	if err := res.Err(); err != nil {
@@ -128,7 +128,7 @@ func (h *helper[Entity, Transform]) GetFilter(ctx context.Context, filter bson.M
 	return o, true, nil
 }
 
-func (h *helper[Entity, Transform]) UpdateOne(ctx context.Context, filter bson.M, setter bson.M, options ...*options.UpdateOptions) *i18np.Error {
+func (h *helper[Entity, Transform]) UpdateOne(ctx context.Context, filter bson.M, setter bson.M, options ...*options.UpdateOptions) error {
 	res, err := h.collection.UpdateOne(ctx, filter, setter, options...)
 	if err != nil {
 		return i18np.NewError("update_query_failed", i18np.P{"Error": err.Error()})

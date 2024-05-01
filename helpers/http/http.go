@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/cilloparch/cillop/i18np"
+	"github.com/cilloparch/cillop/log"
 	"github.com/cilloparch/cillop/middlewares/i18n"
 	"github.com/goccy/go-json"
 
@@ -23,9 +24,16 @@ type Config struct {
 	BodyLimit      int
 	ReadBufferSize int
 	Debug          bool
+	Logger         log.Service
 }
 
+// RunServer runs a server with the given configuration.
+// It returns an error if the server fails to start.
+// If the logger is nil, it will use the default logger.
 func RunServer(cfg Config) error {
+	if cfg.Logger == nil || cfg.Logger == log.Service(nil) {
+		cfg.Logger = log.Default(log.Config{Debug: cfg.Debug})
+	}
 	addr := fmt.Sprintf("%v:%v", cfg.Host, cfg.Port)
 	return RunServerOnAddr(addr, cfg)
 }
@@ -35,13 +43,13 @@ func RunServerOnAddr(addr string, cfg Config) error {
 		cfg.AppName = "Cillop Arch"
 	}
 	if cfg.BodyLimit == 0 {
-		cfg.BodyLimit = 5 * 1024 * 1024
+		cfg.BodyLimit = 10 * 1024 * 1024
 	}
 	if cfg.ReadBufferSize == 0 {
-		cfg.ReadBufferSize = 8 * 1024 * 1024
+		cfg.ReadBufferSize = 10 * 1024 * 1024
 	}
 	app := fiber.New(fiber.Config{
-		ErrorHandler:   NewErrorHandler(cfg.Debug),
+		ErrorHandler:   NewErrorHandler(cfg.Logger, cfg.I18n),
 		JSONEncoder:    json.Marshal,
 		JSONDecoder:    json.Unmarshal,
 		CaseSensitive:  true,

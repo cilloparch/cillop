@@ -7,6 +7,8 @@ import (
 	"google.golang.org/grpc"
 )
 
+// RunServer runs a server with the given configuration.
+// It returns an error if the server fails to start.
 func RunServer(port int, registerServer func(server *grpc.Server)) error {
 	addr := fmt.Sprintf(":%v", port)
 	return RunServerOnAddr(addr, registerServer)

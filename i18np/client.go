@@ -2,6 +2,7 @@ package i18np
 
 import (
 	"github.com/BurntSushi/toml"
+	"github.com/cilloparch/cillop/log"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"golang.org/x/text/language"
 )
@@ -10,19 +11,54 @@ import (
 // b is i18n bundle
 // Fallback is default language
 type I18n struct {
-	// b is i18n bundle
-	b *i18n.Bundle
+	logger         log.Service
+	b              *i18n.Bundle
+	fallback       string
+	fallbackMsgKey string
+	debug          bool
+}
 
+type Config struct {
 	// Fallback is default language
 	Fallback string
+
+	// FallbackMsgKey is default message key
+	FallbackMsgKey string
+
+	// Debug is debug mode
+	// if is true, it will print debug log
+	Debug bool
+
+	// Logger is logger
+	// if is nil, it will use default logger
+	Logger log.Service
+}
+
+var ConfigDefault = Config{
+	Fallback:       "en",
+	FallbackMsgKey: "other",
+	Debug:          false,
+	Logger:         log.Default(log.Config{Debug: false}),
 }
 
 // New is constructor for I18n
 // fallback is default language
 // return I18n
-func New(fallback string) *I18n {
-	b := i18n.NewBundle(language.English)
-	return &I18n{b: b, Fallback: fallback}
+func New(cfg Config) *I18n {
+	if cfg.Logger == nil || cfg.Logger == log.Service(nil) {
+		cfg.Logger = log.Default(log.Config{Debug: cfg.Debug})
+	}
+	lang := language.English
+	if cfg.Fallback != "" {
+		language, err := language.Parse(cfg.Fallback)
+		if err != nil {
+			cfg.Logger.Error(err, messages.FailedParseLocale)
+		} else {
+			lang = language
+		}
+	}
+	b := i18n.NewBundle(lang)
+	return &I18n{b: b, fallback: cfg.Fallback, fallbackMsgKey: cfg.FallbackMsgKey, debug: cfg.Debug, logger: cfg.Logger}
 }
 
 // Load is load i18n file
@@ -97,4 +133,8 @@ func (i *I18n) TranslateFromErrorDetail(err Error, languages ...string) (string,
 		MessageID:    err.Key,
 		TemplateData: err.Params,
 	}, languages...), err.Details
+}
+
+func (i *I18n) Fallback() string {
+	return i.fallback
 }
