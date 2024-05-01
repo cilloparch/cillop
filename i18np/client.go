@@ -34,6 +34,13 @@ type Config struct {
 	Logger log.Service
 }
 
+var ConfigDefault = Config{
+	Fallback:       "en",
+	FallbackMsgKey: "other",
+	Debug:          false,
+	Logger:         log.Default(log.Config{Debug: false}),
+}
+
 // New is constructor for I18n
 // fallback is default language
 // return I18n

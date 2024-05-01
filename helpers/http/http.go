@@ -40,13 +40,13 @@ func RunServerOnAddr(addr string, cfg Config) error {
 		cfg.AppName = "Cillop Arch"
 	}
 	if cfg.BodyLimit == 0 {
-		cfg.BodyLimit = 5 * 1024 * 1024
+		cfg.BodyLimit = 10 * 1024 * 1024
 	}
 	if cfg.ReadBufferSize == 0 {
-		cfg.ReadBufferSize = 8 * 1024 * 1024
+		cfg.ReadBufferSize = 10 * 1024 * 1024
 	}
 	app := fiber.New(fiber.Config{
-		ErrorHandler:   NewErrorHandler(cfg.Logger),
+		ErrorHandler:   NewErrorHandler(cfg.Logger, cfg.I18n),
 		JSONEncoder:    json.Marshal,
 		JSONDecoder:    json.Unmarshal,
 		CaseSensitive:  true,

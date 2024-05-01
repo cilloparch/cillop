@@ -50,6 +50,18 @@ func (e *Error) IsErr() bool {
 	return e.Key != ""
 }
 
+func (e *Error) JSON(translatedMsg string) map[string]interface{} {
+	if e.IsDetails() {
+		return map[string]interface{}{
+			"error":   translatedMsg,
+			"details": e.Details,
+		}
+	}
+	return map[string]interface{}{
+		"error": translatedMsg,
+	}
+}
+
 // NewError returns a new I18nError
 // It is used to return errors from functions
 // example:
