@@ -2,11 +2,17 @@ package pagination
 
 import "github.com/cilloparch/cillop/types/list"
 
+// P is the pagination struct
 type P struct {
-	Page  *int `query:"page" validate:"omitempty,gt=0"`
+
+	// Page is the page number
+	Page *int `query:"page" validate:"omitempty,gt=0"`
+
+	// Limit is the number of items per page
 	Limit *int `query:"limit" validate:"omitempty,gt=0"`
 }
 
+// Default sets the default values for the pagination
 func (r *P) Default(maxPage ...int) {
 	mxPage := 1000
 	if len(maxPage) > 0 {
@@ -22,6 +28,7 @@ func (r *P) Default(maxPage ...int) {
 	}
 }
 
+// ToListConfig converts the pagination to a list configuration
 func (r *P) ToListConfig() list.Config {
 	r.Default()
 	return list.Config{

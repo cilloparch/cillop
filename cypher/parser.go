@@ -46,6 +46,11 @@ func Parse(record *neo4j.Record, alias string, target interface{}) error {
 	return nil
 }
 
+// ParseStruct parses a cypher query result record and store the result in target interface
+//   - record: neo4j result record
+//   - alias: the alias used in cypher query (e.g. m.title)
+//   - target: target interface (e.g. movie.Entity)
+//     Target object should a "neo4j" tab (e.g. `neo4j:"title"`)
 func ParseStruct(record *neo4j.Record, alias string, target interface{}) error {
 	val, ok := record.Get(alias)
 	if ok {

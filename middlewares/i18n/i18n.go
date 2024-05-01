@@ -7,8 +7,10 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// AcceptedLanguages is the list of accepted languages.
 var AcceptedLanguages = []string{}
 
+// GetLanguagesInContext returns the language and the accept-language header from the context.
 func GetLanguagesInContext(i i18np.I18n, c *fiber.Ctx) (string, string) {
 	l := c.Query("lang")
 	a := c.Get("Accept-Language", i.Fallback())
@@ -32,6 +34,7 @@ func GetLanguagesInContext(i i18np.I18n, c *fiber.Ctx) (string, string) {
 	return l, a
 }
 
+// New returns a new i18n middleware.
 func New(i i18np.I18n, acceptLangs []string) fiber.Handler {
 	AcceptedLanguages = acceptLangs
 	return func(c *fiber.Ctx) error {
@@ -42,10 +45,12 @@ func New(i i18np.I18n, acceptLangs []string) fiber.Handler {
 	}
 }
 
+// ParseLocale parses the locale from the context.
 func ParseLocale(ctx *fiber.Ctx) string {
 	return ctx.Locals("lang").(string)
 }
 
+// ParseLocales parses the locales from the context.
 func ParseLocales(ctx *fiber.Ctx) (string, string) {
 	return ctx.Locals("lang").(string), ctx.Locals("accept-language").(string)
 }

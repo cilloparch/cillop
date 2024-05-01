@@ -10,6 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// ParseBody parses the request body into the given struct and validates it.
 func ParseBody(c *fiber.Ctx, v validation.Validator, i i18np.I18n, d interface{}) {
 	l, a := i18n.GetLanguagesInContext(i, c)
 	if err := c.BodyParser(d); err != nil {
@@ -18,6 +19,7 @@ func ParseBody(c *fiber.Ctx, v validation.Validator, i i18np.I18n, d interface{}
 	validateStruct(c.UserContext(), d, v, i, l, a)
 }
 
+// ParseQuery parses the request query into the given struct and validates it.
 func ParseQuery(c *fiber.Ctx, v validation.Validator, i i18np.I18n, d interface{}) {
 	l, a := i18n.GetLanguagesInContext(i, c)
 	if err := c.QueryParser(d); err != nil {
@@ -26,6 +28,7 @@ func ParseQuery(c *fiber.Ctx, v validation.Validator, i i18np.I18n, d interface{
 	validateStruct(c.UserContext(), d, v, i, l, a)
 }
 
+// ParseParams parses the request params into the given struct and validates it.
 func ParseParams(c *fiber.Ctx, v validation.Validator, i i18np.I18n, d interface{}) {
 	l, a := i18n.GetLanguagesInContext(i, c)
 	if err := c.ParamsParser(d); err != nil {

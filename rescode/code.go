@@ -1,17 +1,32 @@
 package rescode
 
+// RC is a struct that contains the code, message, http status, and translateable.
+// Code is the code of the error.
 type RC struct {
-	Code          uint64
-	Message       string
-	HttpStatus    int
+
+	// Code is the code of the error.
+	Code uint64
+
+	// Message is the message of the error.
+	Message string
+
+	// HttpStatus is the http status of the error.
+	HttpStatus int
+
+	// Translateable is the flag to determine whether the message is translatable.
 	Translateable bool
 }
 
+// Extra is a struct that contains the http status and translateable.
 type Extra struct {
-	HttpStatus    int
+	// HttpStatus is the http status of the error.
+	HttpStatus int
+
+	// Translateable is the flag to determine whether the message is translatable.
 	Translateable bool
 }
 
+// New is a function to create a new RC.
 func New(code uint64, message string, extra ...Extra) *RC {
 	e := Extra{
 		HttpStatus:    400,
@@ -28,6 +43,7 @@ func New(code uint64, message string, extra ...Extra) *RC {
 	}
 }
 
+// JSON is a function to return the RC as a JSON.
 func (r *RC) JSON(msgs ...string) map[string]interface{} {
 	msg := r.Message
 	if len(msgs) > 0 {
@@ -39,6 +55,7 @@ func (r *RC) JSON(msgs ...string) map[string]interface{} {
 	}
 }
 
+// Error is a function to return the message of the RC.
 func (r *RC) Error() string {
 	return r.Message
 }

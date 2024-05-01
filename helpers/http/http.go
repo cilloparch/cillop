@@ -27,6 +27,9 @@ type Config struct {
 	Logger         log.Service
 }
 
+// RunServer runs a server with the given configuration.
+// It returns an error if the server fails to start.
+// If the logger is nil, it will use the default logger.
 func RunServer(cfg Config) error {
 	if cfg.Logger == nil || cfg.Logger == log.Service(nil) {
 		cfg.Logger = log.Default(log.Config{Debug: cfg.Debug})

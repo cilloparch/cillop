@@ -2,9 +2,16 @@ package log
 
 import "fmt"
 
+// Service is the interface that wraps the basic logging methods.
 type Service interface {
+
+	// Msg logs a message. It should be used for general logging.
 	Msg(msg string)
+
+	// Error logs an error. It should be used for logging errors.
 	Error(err error, msg ...string)
+
+	// DebugMode returns whether the logger is in debug mode.
 	DebugMode() bool
 }
 
@@ -16,6 +23,7 @@ type defaultLogger struct {
 	debug bool
 }
 
+// Default returns a new logger with the default configuration.
 func Default(cfg Config) Service {
 	return &defaultLogger{
 		debug: cfg.Debug,
