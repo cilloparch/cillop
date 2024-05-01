@@ -1,4 +1,4 @@
-module github.com/cilloparch/cillop/v2/v2
+module github.com/cilloparch/cillop/v2
 
 go 1.20
 
