@@ -9,7 +9,9 @@ require (
 	github.com/goccy/go-json v0.10.2
 	github.com/gofiber/fiber/v2 v2.48.0
 	github.com/google/uuid v1.3.1
+	github.com/mitchellh/mapstructure v1.5.0
 	github.com/nats-io/nats.go v1.28.0
+	github.com/neo4j/neo4j-go-driver/v5 v5.20.0
 	github.com/nicksnyder/go-i18n/v2 v2.2.1
 	go.deanishe.net/env v0.5.1
 	go.mongodb.org/mongo-driver v1.12.1
