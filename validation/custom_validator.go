@@ -1,6 +1,7 @@
 package validation
 
 import (
+	"reflect"
 	"regexp"
 
 	"github.com/go-playground/validator/v10"
@@ -43,6 +44,21 @@ func validatePhone(f1 validator.FieldLevel) bool {
 }
 
 func validateUUID(f1 validator.FieldLevel) bool {
-	_, err := uuid.Parse(f1.Field().String())
-	return err == nil
+	switch f1.Field().Kind() {
+	case reflect.String:
+		_, err := uuid.Parse(f1.Field().String())
+		return err == nil
+	case reflect.Ptr:
+		if f1.Field().Type().String() == "*uuid.UUID" {
+			return f1.Field().Interface() != nil && f1.Field().Elem().Interface() != uuid.Nil
+		}
+		return false
+	case reflect.Struct:
+		if f1.Field().Type().String() == "uuid.UUID" {
+			return f1.Field().Interface() != uuid.Nil
+		}
+		return false
+	default:
+		return false
+	}
 }
